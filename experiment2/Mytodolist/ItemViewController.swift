@@ -37,6 +37,14 @@ class ItemViewController: UIViewController {
             self.titleInput.text! = itemToEdit!.title
             self.isChecked.isOn = itemToEdit!.isChecked
         }
+        /*let bg = UIImage(named: "nixeu")
+        let bgView = UIImageView(image: bg)
+        bgView.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(bgView, at: 0)*/
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "nixeu")
+        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(backgroundImage, at: 0)
         
     }
     @IBAction func Closed(_ sender: Any) {

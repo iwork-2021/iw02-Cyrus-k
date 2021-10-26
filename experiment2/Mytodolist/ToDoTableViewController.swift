@@ -20,6 +20,9 @@ class ToDoTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.tintColor = .blue
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -27,6 +30,20 @@ class ToDoTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //self.navigationController?.navigationBar.prefersLargeTitles = true
         loadItems()
+        /*UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableViewBackground.png"]];
+        [tempImageView setFrame:self.tableView.frame];
+
+        self.tableView.backgroundView = tempImageView;
+        [tempImageView release];*/
+        
+
+        //self.tableView.backgroundColor = [UIColor.clearColor];
+
+        let bg = UIImage(named: "nixeu")
+        let bgView = UIImageView(image: bg)
+        bgView.contentMode = UIView.ContentMode.scaleAspectFill
+        self.tableView.backgroundView = bgView
+        
     }
 
     // MARK: - Table view data source
@@ -58,10 +75,10 @@ class ToDoTableViewController: UITableViewController {
 
         return cell
     }
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    /*override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         items.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
+    }*/
     
     /*override func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
@@ -137,6 +154,15 @@ class ToDoTableViewController: UITableViewController {
         print("Marked as favourite")
     }
     
+    private func moveToFirst(indexPath: IndexPath) {
+        let newitem = items[indexPath.row]
+        items.remove(at: indexPath.row)
+        let toIndexPath = IndexPath(row: 0, section: 0)
+        items.insert(newitem, at: toIndexPath.row)
+        self.tableView.moveRow(at: indexPath, to: toIndexPath)
+        print("move to first")
+    }
+    
     override func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // ...
@@ -148,6 +174,25 @@ class ToDoTableViewController: UITableViewController {
         action.backgroundColor = .systemCyan
         
         return UISwipeActionsConfiguration(actions: [action])
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                       trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal,
+                                        title: "Delete") { [weak self] (action, view, completionHandler) in
+                                            self?.handleMarkAsFavourite(indexPath: indexPath)
+                                            completionHandler(true)
+        }
+        action.backgroundColor = .systemRed
+        
+        let movetotop = UIContextualAction(style: .normal,
+                                        title: "Top") { [weak self] (action, view, completionHandler) in
+                                            self?.moveToFirst(indexPath: indexPath)
+                                            completionHandler(true)
+        }
+        movetotop.backgroundColor = .systemGray
+        
+        return UISwipeActionsConfiguration(actions: [action,movetotop])
     }
     /*override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             items[indexPath.row].isChecked = !(items[indexPath.row].isChecked)
