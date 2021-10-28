@@ -75,23 +75,49 @@ class ToDoTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        tableView.deselectRow(at: indexPath, animated: false)
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath) as! ToDoTableViewCell
+        let cell = tableView.cellForRow(at: indexPath) as! ToDoTableViewCell
+        let item = items[indexPath.row]
+        //item.isChecked = !item.isChecked
+        if item.isChecked{
+            item.isChecked = false
+            cell.status.text! = " "
+        }
+        else{
+            item.isChecked = true
+            cell.status.text! = "✅"
+        }
+        
+    }
     /*override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         items.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
     }*/
     
-    /*override func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
-        
-    }*/
     
-    /*
+    
+    
     // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    /*override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath) as! ToDoTableViewCell
+        //let cell = tableView.cellForRow(at: indexPath)
+        let item = items[indexPath.row]
+        //item.isChecked = !item.isChecked
+        if item.isChecked{
+            item.isChecked = false
+            cell.status.text! = "✅"
+        }
+        else{
+            item.isChecked = true
+            cell.status.text! = " "
+        }
         // Return false if you do not want the specified item to be editable.
         return true
-    }
-    */
+    }*/
+    
 
     /*
     // Override to support editing the table view.
